@@ -2,13 +2,12 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "keycloak-https",
+        "name": "demo-service",
         "annotations": {
-            "iconClass": "icon-sso",
-            "tags": "keycloak",
-            "version": "4.0.0.Beta2",
-            "openshift.io/display-name": "Keycloak",
-            "description": "An example Keycloak server with HTTPS"
+            "tags": "demo-service",
+            "version": "1.0",
+            "openshift.io/display-name": "Demo Service",
+            "description": "An example Node.js service"
         }
     },
     "parameters": [
@@ -16,31 +15,23 @@
             "displayName": "Application Name",
             "description": "The name for the application.",
             "name": "APPLICATION_NAME",
-            "value": "keycloak",
+            "value": "demo-service",
             "required": true
         },
         {
-            "displayName": "Keycloak Administrator Username",
-            "description": "Keycloak Server administrator username",
-            "name": "KEYCLOAK_USER",
+            "displayName": "Keycloak URL",
+            "description": "Keycloak URL",
+            "name": "KEYCLOAK_URL",
             "from": "[a-zA-Z0-9]{8}",
             "generate": "expression",
             "required": true
         },
         {
-            "displayName": "Keycloak Administrator Password",
-            "description": "Keycloak Server administrator password",
-            "name": "KEYCLOAK_PASSWORD",
-            "from": "[a-zA-Z0-9]{8}",
-            "generate": "expression",
-            "required": true
-        },
-        {
-            "displayName": "DB Vendor",
-            "description": "DB vendor (H2, POSTGRES, MYSQL or MARIADB)",
-            "name": "DB_VENDOR",
-            "value": "H2",
-            "required": true
+            "displayName": "Custom http Route Hostname",
+            "description": "Custom hostname for http service route. Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>",
+            "name": "HOSTNAME_HTTP",
+            "value": "",
+            "required": false
         },
         {
             "displayName": "Custom https Route Hostname",
@@ -57,8 +48,8 @@
             "spec": {
                 "ports": [
                     {
-                        "port": 8443,
-                        "targetPort": 8443
+                        "port": 8080,
+                        "targetPort": 8080
                     }
                 ],
                 "selector": {
@@ -71,7 +62,7 @@
                     "application": "${APPLICATION_NAME}"
                 },
                 "annotations": {
-                    "description": "The web server's https port."
+                    "description": "The web server's http port."
                 }
             }
         },
@@ -85,7 +76,7 @@
                     "application": "${APPLICATION_NAME}"
                 },
                 "annotations": {
-                    "description": "Route for application's https service."
+                    "description": "Route for application's http service."
                 }
             },
             "spec": {
@@ -94,7 +85,7 @@
                     "name": "${APPLICATION_NAME}"
                 },
                 "tls": {
-                    "termination": "passthrough"
+                    "termination": "edge"
                 }
             }
         },
@@ -112,6 +103,20 @@
                     "type": "Recreate"
                 },
                 "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "demo-service"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "namespace": "keycloak",
+                                "name": "demo-service:latest"
+                            }
+                        }
+                    },
                     {
                         "type": "ConfigChange"
                     }
@@ -132,30 +137,17 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}",
-                                "image": "jboss/keycloak-openshift",
+                                "image": "demo-service",
                                 "ports": [
                                     {
                                         "containerPort": 8080,
-                                        "protocol": "TCP"
-                                    },
-                                    {
-                                        "name": "https",
-                                        "containerPort": 8443,
                                         "protocol": "TCP"
                                     }
                                 ],
                                 "env": [
                                     {
-                                        "name": "KEYCLOAK_USER",
-                                        "value": "${KEYCLOAK_USER}"
-                                    },
-                                    {
-                                        "name": "KEYCLOAK_PASSWORD",
-                                        "value": "${KEYCLOAK_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "DB_VENDOR",
-                                        "value": "${DB_VENDOR}"
+                                        "name": "KEYCLOAK_URL",
+                                        "value": "${KEYCLOAK_URL}"
                                     }
                                 ],
                                 "securityContext": {

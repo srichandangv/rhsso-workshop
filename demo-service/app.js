@@ -56,20 +56,16 @@ app.use(keycloak.middleware({
   admin: '/'
 }));
 
-app.get('/service/public', function (req, res) {
+app.get('/public', function (req, res) {
   res.json({message: 'public'});
 });
 
-app.get('/service/secured', keycloak.protect('realm:user'), function (req, res) {
+app.get('/secured', keycloak.protect('realm:user'), function (req, res) {
   res.json({message: 'secured'});
 });
 
-app.get('/service/admin', keycloak.protect('realm:admin'), function (req, res) {
+app.get('/admin', keycloak.protect('realm:admin'), function (req, res) {
   res.json({message: 'admin'});
-});
-
-app.use('*', function (req, res) {
-  res.send('Not found!');
 });
 
 app.listen(8080, function () {
