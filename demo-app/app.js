@@ -27,6 +27,18 @@ function authenticated() {
     document.getElementById('message').innerHTML = 'User: ' + keycloak.tokenParsed['preferred_username'];
 }
 
+window.onload = function () {
+    keycloak.init({ onLoad: 'check-sso', checkLoginIframeInterval: 1 }).success(function () {
+        if (keycloak.authenticated) {
+            authenticated();
+        } else {
+            notAuthenticated();
+        }
+
+        document.body.style.display = 'block';
+    });
+}
+
 function request(endpoint) {
     var req = function() {
         var req = new XMLHttpRequest();
@@ -57,18 +69,6 @@ function request(endpoint) {
     } else {
         req();
     }
-}
-
-window.onload = function () {
-    keycloak.init({ onLoad: 'check-sso', checkLoginIframeInterval: 1 }).success(function () {
-        if (keycloak.authenticated) {
-            authenticated();
-        } else {
-            notAuthenticated();
-        }
-
-        document.body.style.display = 'block';
-    });
 }
 
 keycloak.onAuthLogout = notAuthenticated;

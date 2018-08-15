@@ -3,7 +3,7 @@
     "enabled": true,
     "users": [
         {
-            "username": "stian",
+            "username": "keycloak",
             "enabled": true,
             "credentials": [
                 {
@@ -13,12 +13,7 @@
             ],
             "realmRoles": [
                 "user"
-            ],
-            "clientRoles": {
-                "account": [
-                    "manage-account"
-                ]
-            }
+            ]
         }
     ],
     "roles": {
