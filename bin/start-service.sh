@@ -1,6 +1,5 @@
 #!/bin/bash -e
-
-eval $(tmp/minishift oc-env)
+source bin/env.sh
 
 KEYCLOAK_URL=https://`oc get routes keycloak -o jsonpath='{.spec.host}'`/auth
 

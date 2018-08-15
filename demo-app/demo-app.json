@@ -2,12 +2,12 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "demo-service-php",
+        "name": "demo-app",
         "annotations": {
-            "tags": "demo-service-php",
+            "tags": "demo-app",
             "version": "1.0",
-            "openshift.io/display-name": "Demo Service",
-            "description": "An example PHP service"
+            "openshift.io/display-name": "Demo App",
+            "description": "An example HTML5 app"
         }
     },
     "parameters": [
@@ -15,7 +15,7 @@
             "displayName": "Application Name",
             "description": "The name for the application.",
             "name": "APPLICATION_NAME",
-            "value": "demo-service-php",
+            "value": "demo-app",
             "required": true
         },
         {
@@ -27,11 +27,12 @@
             "required": true
         },
         {
-            "displayName": "Custom http Route Hostname",
-            "description": "Custom hostname for http service route. Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>",
-            "name": "HOSTNAME_HTTP",
-            "value": "",
-            "required": false
+            "displayName": "Service URL",
+            "description": "Service URL",
+            "name": "SERVICE_URL",
+            "from": "[a-zA-Z0-9]{8}",
+            "generate": "expression",
+            "required": true
         },
         {
             "displayName": "Custom https Route Hostname",
@@ -48,8 +49,8 @@
             "spec": {
                 "ports": [
                     {
-                        "port": 9090,
-                        "targetPort": 9090
+                        "port": 8080,
+                        "targetPort": 8080
                     }
                 ],
                 "selector": {
@@ -108,12 +109,12 @@
                         "imageChangeParams": {
                             "automatic": true,
                             "containerNames": [
-                                "demo-service-php"
+                                "demo-app"
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "namespace": "keycloak",
-                                "name": "demo-service-php:latest"
+                                "name": "demo-app:latest"
                             }
                         }
                     },
@@ -137,7 +138,7 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}",
-                                "image": "demo-service-php",
+                                "image": "demo-app",
                                 "ports": [
                                     {
                                         "containerPort": 8080,
@@ -147,48 +148,16 @@
                                 "env": [
                                     {
                                         "name": "KEYCLOAK_URL",
-                                        "value": "${keycloak_url}"
+                                        "value": "${KEYCLOAK_URL}"
+                                    },
+                                    {
+                                        "name": "SERVICE_URL",
+                                        "value": "${SERVICE_URL}"
                                     }
                                 ],
                                 "securityContext": {
                                     "privileged": false
                                 }
-                            },
-                            {
-                              "name": "proxy",
-                              "image": "quay.io/gambol99/keycloak-proxy:latest",
-                              "imagePullPolicy": "Always",
-                              "args": [
-                                "--resources=uri=/secured|roles=user",
-                                "--resources=uri=/admin|roles=admin",
-                                "--client-id=demo-service",
-                                "--client-secret=secret",
-                                "--discovery-url=${KEYCLOAK_URL}/realms/demo/.well-known/openid-configuration",
-                                "--listen=0.0.0.0:9090",
-                                "--enable-logging=true",
-                                "--enable-json-logging=true",
-                                "--upstream-url=http://127.0.0.1:8080",
-                                "--skip-client-id",
-                                "--skip-openid-provider-tls-verify",
-                                "--cors-origins=*",
-                                "--cors-credentials=true",
-                                "--cors-methods=GET,POST,OPTIONS"
-                              ],
-                              "ports": [
-                                {
-                                  "name": "web",
-                                  "containerPort": 9090
-                                }
-                              ],
-                              "env": [
-                                {
-                                  "name": "KEYCLOAK_URL",
-                                  "value": "$KEYCLOAK_URL"
-                                }
-                              ],
-                              "securityContext": {
-                                "privileged": false
-                              }
                             }
                         ]
                     }

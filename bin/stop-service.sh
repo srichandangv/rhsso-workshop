@@ -1,5 +1,4 @@
 #!/bin/bash -e
-
-eval $(tmp/minishift oc-env)
+source bin/env.sh
 
 oc delete all -l app=demo-service

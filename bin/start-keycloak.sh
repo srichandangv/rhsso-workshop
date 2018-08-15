@@ -1,7 +1,6 @@
 #!/bin/bash -e
+source bin/env.sh
 
-eval $(tmp/minishift oc-env)
-
-oc new-app -f keycloak/keycloak-https.json \
+oc new-app -f keycloak/keycloak.json \
 -p KEYCLOAK_USER=admin \
 -p KEYCLOAK_PASSWORD=admin
