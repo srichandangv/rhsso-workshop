@@ -1,4 +1,7 @@
 <?php
-header('Content-Type: application/json');
-echo '{ message: "admin" }';
+include 'headers.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo '{ "message": "admin" }';
+}
 ?>

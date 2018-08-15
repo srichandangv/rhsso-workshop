@@ -159,8 +159,9 @@
                               "image": "quay.io/gambol99/keycloak-proxy:latest",
                               "imagePullPolicy": "Always",
                               "args": [
-                                "--resources=uri=/secured|roles=user",
-                                "--resources=uri=/admin|roles=admin",
+                                "--resources=uri=/public|white-listed=true",
+                                "--resources=uri=/secured|roles=user|methods=GET",
+                                "--resources=uri=/admin|roles=admin|methods=GET",
                                 "--client-id=demo-service",
                                 "--client-secret=secret",
                                 "--discovery-url=${KEYCLOAK_URL}/realms/demo/.well-known/openid-configuration",
@@ -170,9 +171,7 @@
                                 "--upstream-url=http://127.0.0.1:8080",
                                 "--skip-client-id",
                                 "--skip-openid-provider-tls-verify",
-                                "--cors-origins=*",
-                                "--cors-credentials=true",
-                                "--cors-methods=GET,POST,OPTIONS"
+                                "--no-redirects"
                               ],
                               "ports": [
                                 {
