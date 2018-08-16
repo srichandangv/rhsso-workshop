@@ -36,12 +36,11 @@
             "clientId": "app",
             "enabled": true,
             "publicClient": true,
-            "rootUrl": "https://app-keycloak.192.168.42.240.nip.io",
             "redirectUris": [
-                "/*"
+                "*"
             ],
             "webOrigins": [
-                "+"
+                "*"
             ]
         }
     ]

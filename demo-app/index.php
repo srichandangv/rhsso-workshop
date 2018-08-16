@@ -47,6 +47,11 @@
             <div class="message" id="message"></div>
         </div>
     </div>
+
+    <div class="service">
+        <div>Keycloak: <?= $_ENV["KEYCLOAK_URL"] ?></div>
+        <div>Service: <?= $_ENV["SERVICE_URL"] ?></div>
+    </div>
 </body>
 
 </html>

@@ -28,7 +28,7 @@ function authenticated() {
 }
 
 window.onload = function () {
-    keycloak.init({ onLoad: 'check-sso', checkLoginIframeInterval: 1 }).success(function () {
+    keycloak.init({ onLoad: 'check-sso' }).success(function () {
         if (keycloak.authenticated) {
             authenticated();
         } else {
