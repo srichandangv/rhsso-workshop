@@ -14,7 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var keycloak = new Keycloak('keycloak.php');
+var keycloak = new Keycloak({
+    realm: 'demo',
+    clientId: 'app'
+});
+
+window.onload = function () {
+    keycloak.init({ onLoad: 'check-sso' }).success(function () {
+        if (keycloak.authenticated) {
+            authenticated();
+        } else {
+            notAuthenticated();
+        }
+
+        document.getElementById('wrapper').style.display = 'block';
+    });
+}
 
 function notAuthenticated() {
     document.getElementById('not-authenticated').style.display = 'block';
@@ -25,18 +40,6 @@ function authenticated() {
     document.getElementById('not-authenticated').style.display = 'none';
     document.getElementById('authenticated').style.display = 'block';
     document.getElementById('message').innerHTML = 'User: ' + keycloak.tokenParsed['preferred_username'];
-}
-
-window.onload = function () {
-    keycloak.init({ onLoad: 'check-sso' }).success(function () {
-        if (keycloak.authenticated) {
-            authenticated();
-        } else {
-            notAuthenticated();
-        }
-
-        document.body.style.display = 'block';
-    });
 }
 
 function request(endpoint) {

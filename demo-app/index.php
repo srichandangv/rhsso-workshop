@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <div class="wrapper">
+    <div id="wrapper" class="wrapper" style="display: none;">
         <div id="not-authenticated" class="menu">
             <button name="loginBtn" onclick="keycloak.login()">Login</button>
         </div>
