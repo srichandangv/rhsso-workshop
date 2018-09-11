@@ -42,6 +42,21 @@
             "webOrigins": [
                 "*"
             ]
+        },
+        {
+            "clientId": "demo-mutual-tls",
+            "enabled": true,
+            "publicClient": false,
+            "clientAuthenticatorType": "client-x509",
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ],
+            "attributes": {
+                "x509.subjectdn": "CN=demo-mutual-tls-keycloak.*"
+            }
         }
     ]
 }

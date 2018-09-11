@@ -6,10 +6,14 @@ There are a few bits to the demo and to make it easy to deploy everything it use
 easy to run everything on a single computer and have everything wired together properly.
 
 Before starting the demo you need to download and install MiniShift. This is as easy as [downloading the
-MiniShift distribution](https://github.com/minishift/minishift#getting-started).
+MiniShift distribution](https://github.com/minishift/minishift#getting-started) or running it with your favorite
+`oc cluster up` command.
 
 Once you have downloaded MiniShift start it up and make sure you install the admin-user addon. For 
 simplicity you can just run `bin/start-minishift.sh` which will do this for you.
+
+Alternatively, you can run `bin/start-oc-cluster-up.sh`, which will start your local cluster and add
+Cluster Admin permissions to the `developer` user (so that you can see all the Projects in the UI Console).
 
 ## Overview
 
@@ -19,6 +23,7 @@ The demo contains the following parts:
 * Node.js REST service
 * PHP REST service
 * HTML5 application
+* Spring application for Mutual TLS
 
 ## Starting Keycloak
 
@@ -68,3 +73,15 @@ roles. Login to the Keycloak admin console and add the `admin` role to the `keyc
 do that.
 
 One last fun thing you can try is to change the application to invoke the PHP service instead.
+
+## Deploying the Spring Mutual TLS app
+
+The Mutual TLS application demonstrates how to use Mutual TLS with x509 Client Authenticator. It should be 
+considered as a separate piece from the PHP, Node.js and HTML5 application (although it exposes the same
+REST interface). 
+
+In order to run it, just invoke `bin/start-mutual-tls-demo.sh`. The next step is to obtain the route using `oc get routes`.
+Once you identify, navigate to the demo application and proceed into the secured section. Both Keycloak and 
+Mutual TLS application have SSL debug turned on. This way you will see how the handshake messages are flying in and out.
+
+NOTE: Do not forget to import the `demo-realm.json`! 
