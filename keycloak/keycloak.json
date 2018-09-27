@@ -146,7 +146,9 @@
                         "containers": [
                             {
                                 "name": "${APPLICATION_NAME}",
-                                "image": "jboss/keycloak-openshift",
+                                "image": "jboss/keycloak:master",
+                                "imagePullPolicy": "Always",
+                                "args": ["-Djavax.net.debug=ssl:handshake:verbose", "-b", "0.0.0.0", "--debug"],
                                 "ports": [
                                     {
                                         "containerPort": 8080,
@@ -178,11 +180,27 @@
                                     {
                                         "name": "KEYCLOAK_LOGLEVEL",
                                         "value": "${KEYCLOAK_LOGLEVEL}"
+                                    },
+                                    {
+                                        "name": "X509_CA_BUNDLE",
+                                        "value": "/etc/x509/client/tls.crt"
                                     }
                                 ],
                                 "securityContext": {
                                     "privileged": false
                                 },
+                                "volumeMounts": [
+                                    {
+                                        "name": "keycloak-server-tls",
+                                        "mountPath": "/etc/x509/https",
+                                        "readOnly": true
+                                    },
+                                    {
+                                        "name": "keycloak-server-tls",
+                                        "mountPath": "/etc/x509/client",
+                                        "readOnly": true
+                                    }
+                                ],
                                 "readinessProbe": {
                                     "httpGet": {
                                         "path": "/auth/realms/master",
@@ -192,6 +210,20 @@
                                     "periodSeconds": 10,
                                     "timeoutSeconds": 1,
                                     "failureThreshold": 5 
+                                }
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "name": "keycloak-server-tls",
+                                "secret": {
+                                    "secretName": "keycloak-server-tls"
+                                }
+                            },
+                            {
+                                "name": "keycloak-client-tls",
+                                "secret": {
+                                    "secretName": "keycloak-client-tls"
                                 }
                             }
                         ]

@@ -1,0 +1,282 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "demo-mutual-tls",
+        "annotations": {
+            "tags": "demo-mutual-tls",
+            "version": "1.0",
+            "openshift.io/display-name": "Mutual TLS App",
+            "description": "An example Mutual TLS app"
+        }
+    },
+    "parameters": [
+        {
+            "displayName": "Application Name",
+            "description": "The name for the application.",
+            "name": "APPLICATION_NAME",
+            "value": "demo-mutual-tls",
+            "required": true
+        },
+        {
+            "displayName": "Keycloak URL",
+            "description": "Keycloak URL",
+            "name": "KEYCLOAK_URL",
+            "from": "[a-zA-Z0-9]{8}",
+            "generate": "expression",
+            "required": true
+        },
+        {
+            "displayName": "Service URL",
+            "description": "Service URL",
+            "name": "SERVICE_URL",
+            "from": "[a-zA-Z0-9]{8}",
+            "generate": "expression",
+            "required": true
+        },
+        {
+            "displayName": "Custom https Route Hostname",
+            "description": "Custom hostname for https service route. Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>",
+            "name": "HOSTNAME_HTTPS",
+            "value": "",
+            "required": false
+        }
+    ],
+    "objects": [
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "spec": {
+                "ports": [
+                    {
+                        "port": 8080,
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}"
+                }
+            },
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                },
+                "annotations": {
+                    "description": "The web server's http port."
+                }
+            }
+        },
+        {
+            "kind": "Route",
+            "apiVersion": "v1",
+            "id": "${APPLICATION_NAME}-https",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                },
+                "annotations": {
+                    "description": "Route for application's http service."
+                }
+            },
+            "spec": {
+                "host": "${HOSTNAME_HTTPS}",
+                "to": {
+                    "name": "${APPLICATION_NAME}"
+                },
+                "tls": {
+                    "termination": "edge",
+                    "insecureEdgeTerminationPolicy": "Redirect"
+                }
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "labels": {
+                    "application": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "triggers": [
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "demo-mutual-tls"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "namespace": "keycloak",
+                                "name": "demo-mutual-tls:latest"
+                            }
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    }
+                ],
+                "replicas": 1,
+                "selector": {
+                    "deploymentConfig": "${APPLICATION_NAME}"
+                },
+                "template": {
+                    "metadata": {
+                        "name": "${APPLICATION_NAME}",
+                        "labels": {
+                            "deploymentConfig": "${APPLICATION_NAME}",
+                            "application": "${APPLICATION_NAME}"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "${APPLICATION_NAME}",
+                                "image": "demo-mutual-tls",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "KEYCLOAK_AUTH-SERVER-URL",
+                                        "value": "${KEYCLOAK_URL}"
+                                    },
+                                    {
+                                        "name": "SERVICE_URL",
+                                        "value": "${SERVICE_URL}"
+                                    }
+                                ],
+                                "securityContext": {
+                                    "privileged": false
+                                },
+                                "volumeMounts": [
+                                    {
+                                        "name": "keystore-volume",
+                                        "mountPath": "/var/run/secrets/java.io/keystores"
+                                    },
+                                    {
+                                        "name": "truststore-volume",
+                                        "mountPath": "/var/run/secrets/java.io/truststores"
+                                    }
+                                ]
+                            }
+                        ],
+                        "initContainers": [
+                            {
+                                "name": "pem-to-keystore",
+                                "image": "registry.access.redhat.com/redhat-sso-7/sso71-openshift:1.1-16",
+                                "env": [
+                                    {
+                                        "name": "TLS_KEY_FILE",
+                                        "value": "/var/run/secrets/java.io/raw/keystores/tls.key"
+                                    },
+                                    {
+                                        "name": "CRT_FILE",
+                                        "value": "/var/run/secrets/java.io/raw/keystores/tls.crt"
+                                    },
+                                    {
+                                        "name": "KEYSTORE_PKCS12",
+                                        "value": "/var/run/secrets/java.io/keystores/keystore.pkcs12"
+                                    },
+                                    {
+                                        "name": "KEYSTORE_FILE",
+                                        "value": "/var/run/secrets/java.io/keystores/keystore.jks"
+                                    },
+                                    {
+                                        "name": "KEYSTORE_PASSWORD",
+                                        "value": "password"
+                                    }
+                                ],
+                                "command": [
+                                    "/bin/bash"
+                                ],
+                                "args": [
+                                    "-c",
+                                    "rm -f $KEYSTORE_FILE && openssl pkcs12 -export -inkey $TLS_KEY_FILE -in $CRT_FILE -out $KEYSTORE_PKCS12 -password pass:$KEYSTORE_PASSWORD && keytool -importkeystore -noprompt -srckeystore $KEYSTORE_PKCS12 -srcstoretype pkcs12 -destkeystore $KEYSTORE_FILE -storepass $KEYSTORE_PASSWORD -srcstorepass $KEYSTORE_PASSWORD"
+                                ],
+                                "volumeMounts": [
+                                    {
+                                        "name": "keystore-volume",
+                                        "mountPath": "/var/run/secrets/java.io/keystores"
+                                    },
+                                    {
+                                        "name": "keycloak-client-tls",
+                                        "mountPath": "/var/run/secrets/java.io/raw/keystores",
+                                        "readOnly": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "pem-to-truststore",
+                                "image": "registry.access.redhat.com/redhat-sso-7/sso71-openshift:1.1-16",
+                                "env": [
+                                    {
+                                        "name": "CA_BUNDLE",
+                                        "value": "/var/run/secrets/java.io/raw/truststores/tls.crt"
+                                    },
+                                    {
+                                        "name": "TRUSTSTORE_JKS",
+                                        "value": "/var/run/secrets/java.io/truststores/truststore.jks"
+                                    },
+                                    {
+                                        "name": "TRUSTSTORE_PASSWORD",
+                                        "value": "password"
+                                    }
+                                ],
+                                "command": [
+                                    "/bin/bash"
+                                ],
+                                "args": [
+                                    "-c",
+                                    "rm -f $TRUSTSTORE_JKS && csplit -z -f crt- $CA_BUNDLE '/-----BEGIN CERTIFICATE-----/' '{*}' && for file in crt-*; do keytool -import -noprompt -keystore $TRUSTSTORE_JKS -file $file -storepass $TRUSTSTORE_PASSWORD -alias service-$file; done"
+                                ],
+                                "volumeMounts": [
+                                    {
+                                        "name": "truststore-volume",
+                                        "mountPath": "/var/run/secrets/java.io/truststores"
+                                    },
+                                    {
+                                        "name": "keycloak-server-tls",
+                                        "mountPath": "/var/run/secrets/java.io/raw/truststores"
+                                    }
+                                ]
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "name": "keycloak-client-tls",
+                                "secret": {
+                                    "secretName": "keycloak-client-tls"
+                                }
+                            },
+                            {
+                                "name": "keycloak-server-tls",
+                                "secret": {
+                                    "secretName": "keycloak-server-tls"
+                                }
+                            },
+                            {
+                                "name": "keystore-volume",
+                                "emptyDir": {}
+                            },
+                            {
+                                "name": "truststore-volume",
+                                "emptyDir": {}
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
