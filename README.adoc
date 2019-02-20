@@ -1,6 +1,6 @@
 = RHSSO (aka Keycloak) Workshop
 
-Pre requirements:
+Pre-requirements:
 
 * Github Account
 * Quay.io Account (Optional)
@@ -10,9 +10,9 @@ Agenda:
 
 Instructor demo: 30 mins
 
-Students following: 2 hours
+Students following: 2 hours.
 
-. [5 min] Deploy RHSSO with PosgreSQL into Openshift
+. [5 min] Deploy RHSSO with PostgreSQL into Openshift
 . [5 min] Setup Realm, Roles and Users
 . [15 min] Build frontend and backend containers using Quay.io
 . [10 min] Explore Quay Security Scan
@@ -34,7 +34,7 @@ Students following: 2 hours
 
 image::images/rhsso-setup-create-project.png[]
 
-* Once that you are in security project 
+* Once that you are in securityXX project 
 * On the search catalog field 
 
 image::images/rhsso-setup-select-template.png[]
@@ -49,7 +49,7 @@ image::images/rhsso-setup-select-template.png[]
 
 image::images/rhsso-setup-provisioned.png[]
 
-* Access the Red Hat Single Sign On provisioned service 
+* Access the Red Hat Single Sign-On provisioned service 
 ** Click on the route URL
 
 image::images/rhsso-access-01.png[]
@@ -101,7 +101,7 @@ image::images/rhsso-user-setup-02.png[]
 image::images/rhsso-user-setup-03.png[]
 image::images/rhsso-user-setup-04.png[]
 
-** Select *Role Mappings* on the horizontal sub menu. 
+** Select *Role Mappings* on the horizontal submenu. 
 *** Select *user* on Available Roles and move to *Assign Roles*
 
 image::images/rhsso-user-setup-05.png[]
@@ -116,34 +116,34 @@ image::images/rhsso-user-setup-10.png[]
 
 == Application setup
 
-On this workshop, we will start using a very common scenario. 
+On this workshop, we will start using a prevalent scenario. 
 A frontend application consuming service from an API in a backend (REST) application.
 
 * Frontend - HTML5 application secured with Keycloak JavaScript adapter
 * Backend - Node.js REST service secured with Keycloak Node.js adapter
 
-The backend application expose 3 services:
+The backend application exposes 3 services:
 
 * Public 
 * Secured (Requires user role)
 * Admin  (Requires admin role)
 
-To start, let's first fork the workshop repository to your own git. 
+To start, let's first fork the workshop repository to your git. 
 
     https://github.com/hodrigohamalho/rhsso-workshop
 
 image::images/github-fork.png[]
 
-In the next steps we will setup the application on Quay.io. It isn't mandatory since that we could easily 
-deploy the project using Openshift S2I mechanism, but to show a differente approach we are suggesting to use 
+In the next steps, we will set up the application on Quay.io. It isn't mandatory since we could easily 
+deploy the project using Openshift S2I mechanism, but to show a different approach, we are suggesting to use 
 Quay.
 
-Another possibility, should be binary deployment, but as not everyone can build containers in your own machine, 
-we will explore Quay.io to be responsable to fork the git repository and build the images based on a *Dockerfile*.
+Another possibility should be binary deployment, but as not everyone can build containers in your machine, 
+we will explore Quay.io. Quay is responsible for forking the git repository and building the images based on a *Dockerfile*.
 
 === Frontend application
 
-This is a simple frontend application.
+Demo-app  is a simple frontend application.
 
 * Access https://quay.io 
 ** Create a new repository named *demo-app*
@@ -151,7 +151,7 @@ This is a simple frontend application.
 image::images/quay-01.png[]
 
 *** Select *Public* in Repository Visibility Option
-*** Select *Link go a Github Repository Push* 
+*** Select *Link goes a Github Repository Push* 
 **** Select your user under Organization
 
 image::images/quay-02.png[]
@@ -164,27 +164,23 @@ image::images/quay-03.png[]
 **** Select */demo-app/Dockerfile* as Dockerfile
 **** Select */demo-app* as Context
 
-To test if we setup everything properly, lets trigger a build.
+To test if we set up everything correctly, let's trigger a build.
 
 Edit the file demo-app/index.php changing the title to:
 
     <title>Your Name - Frontend App</title>
 
-Commit and push the changes to github.
+Commit and push the changes to GitHub.
 
 After commit, go to the Quay.io panel. A build should be running.
 
 Congrats, you have a container ready to be deployed into Openshift.
 
-=== Quay Security Scan
-
-
-
 === Backend application
 
 Now, we will repeat the process for the backend application.
 
-This is a NodeJS application.
+Demo-service is a NodeJS application.
 
 * Access https://quay.io 
 ** Create a new repository named *demo-service*
@@ -196,17 +192,47 @@ This is a NodeJS application.
 **** Select */demo-service/Dockerfile* as Dockerfile
 **** Select */demo-service* as Context
 
-To test if we setup everything properly, lets trigger a build.
+To test if we set up everything correctly, let's trigger a build.
 
 Edit the file demo-service/app.js changing the message on line 60 to:
 
     Public workshop
 
-Commit and push the changes to github.
+Commit and push the changes to GitHub.
 
 After commit, go to the Quay.io panel. A build should be running.
 
 Congrats, you have a container ready to be deployed into Openshift.
+
+== Quay Security Scan
+
+On the demo-service repository, select *Tags*. 
+
+image::images/quay-tags-01.png[]
+
+Click on the Scan metrics to open the Dashboard.
+
+image::images/quay-from-nodejs.png[]
+
+If you would like to improve it. Do the following
+
+Open demo-service/Dockerfile, and change line 1 to:
+
+    FROM registry.access.redhat.com/rhoar-nodejs/nodejs-10
+
+Also, remove the WORKDIR line
+
+    - WORKDIR /usr/src/app
+
+Commit and push those changes. 
+
+Look the tags session again, recheck the Scan metrics, also do you notice a significant reduction on the image size?
+
+image::images/quay-tags-01.png[]
+
+image::images/quay-nodejs-from-redhat.png[]
+
+It reinforces the quality and the compromise of Red Hat with security, and consequently, it results in stability too. 
 
 == Deploy applications into Openshift
 
@@ -222,7 +248,7 @@ image::images/rhsso-deploy-app-01.png[]
 
 image::images/rhsso-deploy-app-02.png[]
 
-* On Environment Variables add (adapt to your own values)
+* On Environment Variables add (adapt to your values)
 
     KEYCLOAK_URL=https://sso-securityXX.apps.redhatrj-bf20.openshiftworkshop.com/auth
 
@@ -233,7 +259,7 @@ image::images/rhsso-deploy-app-03.png[]
 image::images/rhsso-deploy-app-04.png[]
 
 * Create a route
-** Check *Secure route*
+** Check *Secure route* 
 
 image::images/rhsso-deploy-app-05.png[]
 
@@ -243,7 +269,7 @@ To do a quick test, access the route created with */public* in the end, you shou
 
 === Deploying the frontend application
 
-You will basically repeat the same process. But in the environment variables you must insert the SERVICE_URL too.
+You will repeat the same process. However, in the environment variables, you must insert the SERVICE_URL too.
 
     SERVICE_URL=https://demo-service-securityXX.apps.redhatrj-bf20.openshiftworkshop.com
 
@@ -251,17 +277,14 @@ image::images/rhsso-deploy-app-06.png[]
 image::images/rhsso-deploy-app-07.png[]
 image::images/rhsso-deploy-app-08.png[]
 
-To test, you can access the route and you will see a web application. If you click on *Invoke Public* 
+To test, you can access the route, and you will see a web application. If you click on *Invoke Public* 
 you should see the message printed. 
 
 image::images/rhsso-deploy-app-09.png[]
 
-If you click on Login you will see a error message *"Client not found"*.
+If you click on Login, you will see an error message *"Client not found"*.
 
 image::images/rhsso-deploy-app-10.png[]
-
-
-== Quay Security Scan
 
 == Setup clients on RHSSO 
 
@@ -274,7 +297,7 @@ image::images/rhsso-deploy-app-10.png[]
 
 image::images/rhsso-client-setup-01.png[]
 
-** Change Access Type to: *bearer-only*
+** Change Access Type to *bearer-only*
 
 image::images/rhsso-client-setup-02.png[]
 
