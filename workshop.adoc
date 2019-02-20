@@ -1,6 +1,7 @@
 = RHSSO Workshop Labs
 
 Pre requirements:
+
 * Github Account
 * Quay.io Account
 * Access to the Openshift environment
@@ -12,17 +13,15 @@ Pre requirements:
     https://master.redhatrj-bf20.openshiftworkshop.com
 
 . Create a project named *security* 
-
 image::images/rhsso-setup-create-project.png[]
-
 . Once that you are in security project 
 . On the search catalog field 
 
 image::images/rhsso-setup-select-template.png[]
 
 .. Click on *Next* 
-.. Fill *admin* as RH-SSO Administrator Username
-.. Fill *workshop* as RH-SSO Administrator Password  
+.. RH-SSO Administrator Username: *admin*
+.. RH-SSO Administrator Password: *workshop*
 .. Select *Next* 
 .. Choose *Do not bind at this time* option and select *Create*
 . You should see a screen similar to this:
