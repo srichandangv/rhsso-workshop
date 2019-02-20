@@ -233,5 +233,5 @@ image::images/rhsso-deploy-app-09.png[]
 
 If you click on Login you will see a error message *"Client not found"*.
 
-
+image::images/rhsso-deploy-app-10.png[]
 
