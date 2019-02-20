@@ -31,6 +31,71 @@ image::images/rhsso-setup-select-template.png[]
 
 image::images/rhsso-setup-provisioned.png[]
 
+* Access the Red Hat Single Sign On provisioned service 
+** Click on the route URL
+
+image::images/rhsso-access-01.png[]
+
+** Click on *Administration Console* 
+
+image::images/rhsso-access-02.png[]
+
+** Fill with the credentials used before
+*** user: admin
+*** password: redhat
+
+image::images/rhsso-access-03.png[]
+
+== RHSSO Realm setup
+
+* Add a new Realm: *demo* 
+
+image::images/rhsso-realm-setup-01.png[]
+
+image::images/rhsso-realm-setup-02.png[]
+
+* Add two roles *User* and *Admin*
+** Click on *Roles* in the vertical left menu
+
+image::images/rhsso-role-setup-01.png[]
+image::images/rhsso-role-setup-02.png[]
+image::images/rhsso-role-setup-03.png[]
+image::images/rhsso-role-setup-04.png[]
+
+* Add two users, first *Karina* with only *user* permission, after *Rodrigo* with *user* and *admin* roles.
+** Click on *Users* in the vertical left menu 
+** Click on *Add user* 
+
+image::images/rhsso-user-setup-01.png[]
+
+*** Username: *Karina*
+*** Email: karina@acme.com
+*** First Name: Karina 
+*** Last Name: Ramalho
+*** Click on Save.
+
+image::images/rhsso-user-setup-02.png[]
+
+** Select *Credentials* on the horizontal sub menu. 
+*** New password: *redhat*
+*** Mark Temporary as *OFF*
+
+image::images/rhsso-user-setup-03.png[]
+image::images/rhsso-user-setup-04.png[]
+
+** Select *Role Mappings* on the horizontal sub menu. 
+*** Select *user* on Available Roles and move to *Assign Roles*
+
+image::images/rhsso-user-setup-05.png[]
+image::images/rhsso-user-setup-06.png[]
+
+After, register the user *Ramalho*, and on *Credentials* let the Temporary as *ON* and on *Roles* assign *admin* and *user* roles.
+
+image::images/rhsso-user-setup-07.png[]
+image::images/rhsso-user-setup-08.png[]
+image::images/rhsso-user-setup-09.png[]
+image::images/rhsso-user-setup-10.png[]
+
 == Application setup
 
 * Clone the workshop github repository
