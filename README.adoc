@@ -1,12 +1,6 @@
 = RHSSO (aka Keycloak) Workshop
 
-Pre-requirements:
-
-* Github Account
-* Quay.io Account (Optional)
-* Access to the Openshift environment
-
-Agenda:
+== Agenda:
 
 Instructor demo: 30 mins
 
@@ -23,6 +17,12 @@ Students following: 2 hours.
 . [2 min] Login Screen features - Forgot Password, Sign in, etc...
 . [2 min] Templates 
 . [2 min] Social Login with Twitter
+
+== Pre-requirements
+
+* Github Account
+* Quay.io Account (Optional)
+* Access to the Openshift environment
 
 == SSO Setup 
 
