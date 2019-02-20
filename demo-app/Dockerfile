@@ -7,3 +7,5 @@ RUN chmod 777 /var/run/apache2
 COPY *.js /var/www/html/
 COPY *.php /var/www/html/
 COPY *.css /var/www/html/
+
+USER 1001
