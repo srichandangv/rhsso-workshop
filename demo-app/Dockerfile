@@ -8,4 +8,6 @@ COPY *.js /var/www/html/
 COPY *.php /var/www/html/
 COPY *.css /var/www/html/
 
+EXPOSE 8080
+
 USER 1001
