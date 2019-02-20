@@ -41,8 +41,8 @@ image::images/rhsso-access-01.png[]
 image::images/rhsso-access-02.png[]
 
 ** Fill with the credentials used before
-*** user: admin
-*** password: redhat
+*** user: *admin*
+*** password: *redhat*
 
 image::images/rhsso-access-03.png[]
 
@@ -98,9 +98,23 @@ image::images/rhsso-user-setup-10.png[]
 
 == Application setup
 
-* Clone the workshop github repository
+On this workshop, we will start using a very common scenario. 
+A frontend application consuming service from an API in a backend (REST) application.
+
+The backend application expose 3 services:
+
+* Public 
+* Secured (Requires user role)
+* Admin  (Requires admin role)
+
+To start, let's first fork the workshop repository to your own git. 
 
     https://github.com/hodrigohamalho/rhsso-workshop
+
+image::images/github-fork.png[]
+
+As not everyone can build containers in your own machine, we will explore Quay.io to be responsable to fork 
+the git repository and build the images based on a *Dockerfile*.
 
 === Frontend application
 
@@ -108,10 +122,19 @@ This is a simple frontend application.
 
 * Access https://quay.io 
 ** Create a new repository named *demo-app*
+
+image::images/quay-01.png[]
+
 *** Select *Public* in Repository Visibility Option
 *** Select *Link go a Github Repository Push* 
 **** Select your user under Organization
+
+image::images/quay-02.png[]
+
 **** Select *rhsso-workshop* as your repository
+
+image::images/quay-03.png[]
+
 **** Select *Trigger for all branches and tags* as trigger option
 **** Select */demo-app/Dockerfile* as Dockerfile
 **** Select */demo-app* as Context
@@ -129,6 +152,8 @@ After commit, go to the Quay.io panel. A build should be running.
 Congrats, you have a container ready to be deployed into Openshift.
 
 === Backend application
+
+Now, we will repeat the process for the backend application.
 
 This is a NodeJS application.
 
