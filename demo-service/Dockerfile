@@ -1,4 +1,6 @@
-FROM registry.access.redhat.com/rhoar-nodejs/nodejs-10
+FROM node:8
+
+WORKDIR /usr/src/app
 
 COPY package.json .
 
