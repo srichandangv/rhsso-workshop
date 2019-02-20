@@ -214,7 +214,7 @@ Click on the Scan metrics to open the Dashboard.
 
 image::images/quay-from-nodejs.png[]
 
-If you would like to improve it. Do the following
+=== Fixing Vulnerabilities 
 
 Open demo-service/Dockerfile, and change line 1 to:
 
@@ -222,7 +222,7 @@ Open demo-service/Dockerfile, and change line 1 to:
 
 Also, remove the WORKDIR line
 
-    - WORKDIR /usr/src/app
+    WORKDIR /usr/src/app
 
 Commit and push those changes. 
 
