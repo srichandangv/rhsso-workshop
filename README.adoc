@@ -1,4 +1,4 @@
-= RHSSO Workshop Labs
+= RHSSO (aka Keycloak) Workshop
 
 Pre requirements:
 
