@@ -12,7 +12,7 @@ Pre requirements:
     
     https://master.redhatrj-bf20.openshiftworkshop.com
 
-* Create a project named *security* 
+* Create a project named *securityXX* (Remember to replace XX to your user number.)
 
 image::images/rhsso-setup-create-project.png[]
 
