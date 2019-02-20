@@ -1,6 +1,4 @@
-FROM node:8
-
-WORKDIR /usr/src/app
+FROM registry.access.redhat.com/rhoar-nodejs/nodejs-10
 
 COPY package.json .
 

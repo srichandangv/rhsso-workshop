@@ -6,6 +6,24 @@ Pre requirements:
 * Quay.io Account (Optional)
 * Access to the Openshift environment
 
+Agenda:
+
+Instructor demo: 30 mins
+
+Students following: 2 hours
+
+. [5 min] Deploy RHSSO with PosgreSQL into Openshift
+. [5 min] Setup Realm, Roles and Users
+. [15 min] Build frontend and backend containers using Quay.io
+. [10 min] Explore Quay Security Scan
+. [10 min] Deploy frontend and backend applications into Openshift
+. [5 min] Register backend and frontend clients on RHSSO
+. [5 min] Explore application showing authentication and authorization
+. [5 min] OTP
+. [2 min] Login Screen features - Forgot Password, Sign in, etc...
+. [2 min] Templates 
+. [2 min] Social Login with Twitter
+
 == SSO Setup 
 
 * Login in Openshift environment using the credential delivered on class
@@ -158,6 +176,10 @@ After commit, go to the Quay.io panel. A build should be running.
 
 Congrats, you have a container ready to be deployed into Openshift.
 
+=== Quay Security Scan
+
+
+
 === Backend application
 
 Now, we will repeat the process for the backend application.
@@ -237,6 +259,9 @@ image::images/rhsso-deploy-app-09.png[]
 If you click on Login you will see a error message *"Client not found"*.
 
 image::images/rhsso-deploy-app-10.png[]
+
+
+== Quay Security Scan
 
 == Setup clients on RHSSO 
 
