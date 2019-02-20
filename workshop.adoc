@@ -13,6 +13,7 @@ Pre requirements:
     https://master.redhatrj-bf20.openshiftworkshop.com
 
 . Create a project named *security* 
+
 image::images/rhsso-setup-create-project.png[]
 . Once that you are in security project 
 . On the search catalog field 
