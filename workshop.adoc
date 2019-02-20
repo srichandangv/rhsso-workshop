@@ -8,30 +8,32 @@ Pre requirements:
 
 == SSO Setup 
 
-. Login in Openshift environment using the credential delivered on class
+* Login in Openshift environment using the credential delivered on class
     
     https://master.redhatrj-bf20.openshiftworkshop.com
 
-. Create a project named *security* 
+* Create a project named *security* 
 
 image::images/rhsso-setup-create-project.png[]
-. Once that you are in security project 
-. On the search catalog field 
+
+* Once that you are in security project 
+* On the search catalog field 
 
 image::images/rhsso-setup-select-template.png[]
 
-.. Click on *Next* 
-.. RH-SSO Administrator Username: *admin*
-.. RH-SSO Administrator Password: *workshop*
-.. Select *Next* 
-.. Choose *Do not bind at this time* option and select *Create*
-. You should see a screen similar to this:
+** Click on *Next* 
+** RH-SSO Administrator Username: *admin*
+** RH-SSO Administrator Password: *workshop*
+** Select *Next* 
+** Choose *Do not bind at this time* option and select *Create*
+
+* You should see a screen similar to this:
 
 image::images/rhsso-setup-provisioned.png[]
 
 == Application setup
 
-. Clone the workshop github repository
+* Clone the workshop github repository
 
     https://github.com/hodrigohamalho/rhsso-workshop
 
@@ -39,15 +41,15 @@ image::images/rhsso-setup-provisioned.png[]
 
 This is a simple frontend application.
 
-. Access https://quay.io 
-.. Create a new repository named *demo-app*
-... Select *Public* in Repository Visibility Option
-... Select *Link go a Github Repository Push* 
-.... Select your user under Organization
-.... Select *rhsso-workshop* as your repository
-.... Select *Trigger for all branches and tags* as trigger option
-.... Select */demo-app/Dockerfile* as Dockerfile
-.... Select */demo-app* as Context
+* Access https://quay.io 
+** Create a new repository named *demo-app*
+*** Select *Public* in Repository Visibility Option
+*** Select *Link go a Github Repository Push* 
+**** Select your user under Organization
+**** Select *rhsso-workshop* as your repository
+**** Select *Trigger for all branches and tags* as trigger option
+**** Select */demo-app/Dockerfile* as Dockerfile
+**** Select */demo-app* as Context
 
 To test if we setup everything properly, lets trigger a build.
 
@@ -65,15 +67,15 @@ Congrats, you have a container ready to be deployed into Openshift.
 
 This is a NodeJS application.
 
-. Access https://quay.io 
-.. Create a new repository named *demo-service*
-... Select *Public* in Repository Visibility Option
-... Select *Link go a Github Repository Push* 
-.... Select your user under Organization
-.... Select *rhsso-workshop* as your repository
-.... Select *Trigger for all branches and tags* as trigger option
-.... Select */demo-service/Dockerfile* as Dockerfile
-.... Select */demo-service* as Context
+* Access https://quay.io 
+** Create a new repository named *demo-service*
+*** Select *Public* in Repository Visibility Option
+*** Select *Link go a Github Repository Push* 
+**** Select your user under Organization
+**** Select *rhsso-workshop* as your repository
+**** Select *Trigger for all branches and tags* as trigger option
+**** Select */demo-service/Dockerfile* as Dockerfile
+**** Select */demo-service* as Context
 
 To test if we setup everything properly, lets trigger a build.
 
