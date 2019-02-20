@@ -16,7 +16,7 @@
  */
 var keycloak = new Keycloak({
     realm: 'demo',
-    clientId: 'app'
+    clientId: 'demo-app'
 });
 
 window.onload = function () {
