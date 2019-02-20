@@ -101,6 +101,9 @@ image::images/rhsso-user-setup-10.png[]
 On this workshop, we will start using a very common scenario. 
 A frontend application consuming service from an API in a backend (REST) application.
 
+* Frontend - HTML5 application secured with Keycloak JavaScript adapter
+* Backend - Node.js REST service secured with Keycloak Node.js adapter
+
 The backend application expose 3 services:
 
 * Public 
@@ -237,3 +240,35 @@ image::images/rhsso-deploy-app-10.png[]
 
 == Setup clients on RHSSO 
 
+=== Demo Service Client
+
+* On side menu, select *Clients*. Select *Add Client* and provide:
+** Client ID: *demo-service*
+
+** Root URL: *https://demo-service-security.apps.redhatrj-bf20.openshiftworkshop.com* (Adjust with your URL)
+
+image::images/rhsso-client-setup-01.png[]
+
+** Change Access Type to: *bearer-only*
+
+image::images/rhsso-client-setup-02.png[]
+
+=== Demo App Client 
+
+* Client ID: *demo-app*
+* Root URL: *https://demo-app-security.apps.redhatrj-bf20.openshiftworkshop.com* (Adjust with your URL)
+
+image::images/rhsso-client-setup-03.png[]
+
+== Demo Navigation
+
+image::images/rhsso-test-01.png[]
+image::images/rhsso-test-02.png[]
+image::images/rhsso-test-03.png[]
+image::images/rhsso-test-04.png[]
+image::images/rhsso-test-05.png[]
+image::images/rhsso-test-06.png[]
+image::images/rhsso-test-07.png[]
+image::images/rhsso-test-08.png[]
+image::images/rhsso-test-09.png[]
+image::images/rhsso-test-10.png[]
