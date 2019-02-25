@@ -4,6 +4,8 @@
 
 Instructor demo: 30 mins
 
+Slide Deck: https://docs.google.com/presentation/d/1M3OKsOlutx4gDJ2RytIcaNqA0Yeb777Gr-zm03UUlv8
+
 Students following: 2 hours.
 
 . [5 min] Deploy RHSSO with PostgreSQL into Openshift
