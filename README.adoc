@@ -322,21 +322,35 @@ In the previous setup we created to users:
 - *ramalho* with *user*,*admin* roles
 
 Try to invoke the Secured Endpoint, you will receive a *403 Forbidden error*
+
 image::images/rhsso-test-01.png[]
 
 It is the expected result as you are not logged in. So Login using *karina* as username and *redhat* as password.
+
 image::images/rhsso-test-02.png[]
 
 Now, you should be able to invoke de Secured Endpoint.
+
 image::images/rhsso-test-03.png[]
 
 Try to invoke the Admin endpoint, you will receive a *403 Forbidden error*. So in this case you could add the permission *admin* to Karina user or log in with *ramalho* user. We will procced loggin with *ramalho* user.
+
 image::images/rhsso-test-04.png[]
 
+Notice that as we marked to change password during the user process creation, now it is asking to update the password as expected.
 
 image::images/rhsso-test-05.png[]
+
+Now, logged in as *ramalho* user let's try to invoke the Admin endpoint.
+
 image::images/rhsso-test-06.png[]
+
+The request works as expected because this user as the admin permission.
+
 image::images/rhsso-test-07.png[]
+
+Click on account and navigate through the all options from the menu on left side.
+
 image::images/rhsso-test-08.png[]
 image::images/rhsso-test-09.png[]
 image::images/rhsso-test-10.png[]
