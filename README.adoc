@@ -82,7 +82,7 @@ image::images/rhsso-role-setup-02.png[]
 image::images/rhsso-role-setup-03.png[]
 image::images/rhsso-role-setup-04.png[]
 
-* Add two users, first *Karina* with only *user* permission, after *Rodrigo* with *user* and *admin* roles.
+* Add two users, first *Karina* with only *user* permission, after *Ramalho* with *user* and *admin* roles.
 ** Click on *Users* in the vertical left menu 
 ** Click on *Add user* 
 
@@ -312,10 +312,28 @@ image::images/rhsso-client-setup-03.png[]
 
 == Demo Navigation
 
+Quick recap, there are 3 endpoints. 
+- Public - No authentication/authorization is required. 
+- Secured - Role *user* is required.
+- Admin - Role *admin* is required. 
+
+In the previous setup we created to users:
+- *karina* with *user* role
+- *ramalho* with *user*,*admin* roles
+
+Try to invoke the Secured Endpoint, you will receive a *403 Forbidden error*
 image::images/rhsso-test-01.png[]
+
+It is the expected result as you are not logged in. So Login using *karina* as username and *redhat* as password.
 image::images/rhsso-test-02.png[]
+
+Now, you should be able to invoke de Secured Endpoint.
 image::images/rhsso-test-03.png[]
+
+Try to invoke the Admin endpoint, you will receive a *403 Forbidden error*. So in this case you could add the permission *admin* to Karina user or log in with *ramalho* user. We will procced loggin with *ramalho* user.
 image::images/rhsso-test-04.png[]
+
+
 image::images/rhsso-test-05.png[]
 image::images/rhsso-test-06.png[]
 image::images/rhsso-test-07.png[]
