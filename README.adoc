@@ -339,19 +339,22 @@ Try to invoke the Admin endpoint, you will receive a *403 Forbidden error*. So i
 
 image::images/rhsso-test-05.png[]
 
-Notice that as we marked to change password during the user process creation, now it is asking to update the password as expected.
+Login with *ramalho* user.
 
 image::images/rhsso-test-06.png[]
 
-Now, logged in as *ramalho* user let's try to invoke the Admin endpoint.
+Notice that as we marked to change password during the user process creation, now it is asking to update the password as expected.
 
 image::images/rhsso-test-07.png[]
 
-The request works as expected because this user as the admin permission.
+Now, logged in as *ramalho* user let's try to invoke the Admin endpoint.
 
 image::images/rhsso-test-08.png[]
 
-Click on account and navigate through the all options from the menu on left side.
+The request works as expected because this user as the admin permission.
 
 image::images/rhsso-test-09.png[]
+
+Click on account and navigate through the all options from the menu on left side.
+
 image::images/rhsso-test-10.png[]
