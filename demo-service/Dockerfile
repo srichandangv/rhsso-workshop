@@ -1,10 +1,6 @@
 FROM registry.access.redhat.com/rhoar-nodejs/nodejs-10
 
-WORKDIR /usr/src/app
-
 COPY package.json .
-
-RUN chown -R 1001 /usr/src/app
 
 RUN npm install
 
