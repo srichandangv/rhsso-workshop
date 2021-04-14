@@ -4,9 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package.json .
 
-USER 1001
-
-RUN chown -R $USER $WORKDIR
+RUN chown -R 1001 /usr/src/app
 
 RUN npm install
 
@@ -14,5 +12,7 @@ COPY keycloak.json .
 COPY app.js .
 
 EXPOSE 8080
+
+USER 1001
 
 CMD [ "npm", "start" ]
