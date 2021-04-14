@@ -18,7 +18,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Keycloak Example App</title>
+    <title>SSO Test - Frontend App</title>
 
     <link rel="stylesheet" type="text/css" href="styles.css"/>
     <script>
