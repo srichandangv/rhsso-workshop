@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 COPY package.json .
 
+RUN sudo chown -R $WORKDIR
+
 RUN npm install
 
 COPY keycloak.json .
